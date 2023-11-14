@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Yellowfin Dashboard</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="http://localhost:8083/JsAPI/v3?"></script>
+</head>
+<body>
+	<div id="divDisplayDashboard" width="100%" />
+	<script>
+	    var requestData =JSON.stringify ({
+				"signOnUser": {
+				"userName": "admin@yellowfin.com.au",
+			    "password": "test"
+			  },
+			  "adminUser": {
+				  "userName": "admin@yellowfin.com.au",
+			      "password": "test"
+		}});
+	
+		$.ajax({
+		    headers: {
+				'Authorization': 'YELLOWFIN ts=' + new Date().getTime() + ', nonce={{$randomInt}}',
+		 		"Accept": 'application/vnd.yellowfin.api-v2+json',
+		 		"content-Type": 'application/json;'
+		    },
+		 	method: 'POST',
+		 	data:requestData,
+		 	url: "http://localhost:8083/api/rpc/login-tokens/create-sso-token",
+		 	success: handlesuccess
+	
+		})
+		function handlesuccess (res, textStatus, jqXHR) {
+			securityToken = res.securityToken;
+			console.log(res.securityToken);
+			
+	 		var url = 'http://localhost:8083/JsAPI/v3?token='+ securityToken;
+	 		var script = document.createElement('script');
+	 		script.src = url;	 		
+	 		document.body.appendChild(script);
+			console.log(url);
+			var options =
+			{
+				dashboardUUID:				'23273d74-c5f8-4373-ae7e-479aa29c06d8',
+				element: 					document.querySelector('div#divDisplayDashboard'),
+				filterValues: 				[],
+				showToolbar: 				true,				// default: true
+				showInfo: 					true,				// default: true
+				showShare: 					true,				// default: true
+				showFilter: 				true,				// default: true
+				scaleCanvasTabs:			true,				// default: true
+				showGlobalContentContainer:	false,				//
+			};
+			
+			yellowfin.init().then(() => {
+				//options.filterValues = [{filterId: "f5733ddb-eb0e-400b-9f1e-8a7e65efde14", valueList: ["Adventure", "Relaxation"]}, {filterId: "9acf1dfa-a98c-4c37-a319-7d88fbd87edb", valueOne: "Male"}];
+				yellowfin.showLoginPrompt = false;
+				//yellowfin.newSession(res.securityToken).then(() => { 
+					yellowfin.loadDashboard(options).then(dash => {
+						// dash.filters.forEach(filter => {
+						// 	if (filter.name == 'Demographic') {
+						// 		filter.setValue(['Adventure', 'Relaxation']);
+						// 	} else if (filter.name == 'Gender') {
+						// 		filter.setValue('Male');
+						// 	}
+						// });
+						//dash.filters.getFilter('Demographic').setValue(['Adventure', 'Relaxation']);
+						//dash.filters.getFilter('Gender').setValue('Male');
+						// dash.filters.applyFilters();
+					});
+				//});
+			});
+		}
+	</script>
+</body>
+</html>
