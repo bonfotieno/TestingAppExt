@@ -21,7 +21,8 @@ Ext.define('TestingAppExt.view.test.Test', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Dashboard 2',
+                    text: 'Create User',
+                    handler: 'onCreateUserClick',
                     value: 'Adventure'
                 },
                 {
