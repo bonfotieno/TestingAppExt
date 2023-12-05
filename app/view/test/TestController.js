@@ -82,7 +82,7 @@ Ext.define('TestingAppExt.view.test.TestController', {
 
     authenticateYellowFinAndGenerate: function () {
         let me = this;
-        var authUserId = 'bonnyotieno9@gmail.com';
+        var authUserId = 'admin@yellowfin.com.au';
         var adminId = 'admin@yellowfin.com.au';
         var adminPassword = 'test';
 
@@ -218,3 +218,5 @@ Ext.define('TestingAppExt.view.test.TestController', {
         });
     }
 });
+
+// EMAIL_ADDRESS_IN_USE
